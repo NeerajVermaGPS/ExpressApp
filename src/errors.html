@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error while {{METHOD_NAME}} Request</title>
+</head>
+<body>
+    <h2 style="margin-bottom: 0;margin-left: 25px;">Error while {{METHOD_NAME}} Request</h2>
+    <ul id="errors"></ul>
+    <script>
+        const errDiv = document.getElementById("errors")
+        // Following is not an error. This will be used to replace following string between {{}} dynamically.
+        Array.from({{errorArr}}).map(err => {
+            let li = document.createElement("li")
+            li.textContent = err
+            errDiv.appendChild(li)
+        })
+    </script>
+</body>
+</html>

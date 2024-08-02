@@ -3,10 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
     <title>API Endpoints</title>
 </head>
 <body>
     <a href="/api/users">Go to users</a></br>
     <a href="/api/cities">Go to cities</a>
+    <form id="request_form">
+        <input type="text" id="id" placeholder="Enter Id"><br>
+        <input type="text" id="username" placeholder="Enter username"><br>
+        <input type="text" id="displayname" placeholder="Enter displayname"><br>
+        <select name="method" id="method">
+            <option value="put">Put</option>
+            <option value="get">Get</option>
+            <option value="post">Post</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+    <script>
+        const form = document.getElementById("request_form")
+        const responseDiv = document.getElementById("response")
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            const id = document.getElementById("id").value
+            const method = document.getElementById("method").value
+            const username = document.getElementById("username").value
+            const displayname = document.getElementById("displayname").value
+
+            switch(method){
+                case "put":
+                    axios.put(`http://localhost:3000/api/users/${id}`, { username: username, displayname: displayname })
+                    .then((res)=>{
+                        responseDiv.innerHTML = `<pre>${res.status}: Data sent!</pre>`
+                    })
+                    .catch((err) => {
+                        console.log(err.message)
+                    })
+                    break;
+                case "post":
+                    axios.post(`http://localhost:3000/api/users/`, { username: username, displayname: displayname })
+                    .then((res)=>{
+                        responseDiv.innerHTML = `<pre>${res.status}: Data sent!</pre>`
+                    })
+                    .catch((err) => {
+                        console.log(err.message)
+                    })
+                    break;
+                case "get":
+                    axios.get(`http://localhost:3000/api/users/${id}`)
+                    .then((res)=>{
+                        responseDiv.innerHTML = `Data received: <br /><pre>{<br/>    id: ${res.data.id}<br/>    username: ${res.data.username}<br/>    displayname: ${res.data.displayname}<br/>}</pre>`
+                    })
+                    .catch((err) => {
+                        console.log(err.message)
+                    })
+                    break;
+                default:
+                    return;
+            }
+        })
+    </script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+Concepts:
+  - GET
+  - Route
+  - Query
+  - POST
+  - PUT
+  - PATCH
+  - DELETE
+  - Middleware
+    - app.use(middleware(req, res, next))
+    - can be used many times
+  - Validation
+    - express-validator
+      - Server-side validation
+      - query
+        - used to validate query parameters
+        - query("filtername").chainedMethods()
+      - validationResult
+        - cosole.log(validationResult(req))
+      - body
+        - used in POST or similar methods for validating request data
+        - body("fieldname").chainedMethods()
+      - matchedData
+        - contains the data from request(either from query or POST)
+      - Validation Schema
+  - Router
