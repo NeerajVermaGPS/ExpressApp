@@ -1,7 +1,7 @@
 export const userArr = [
-    {id: 1, username: "madam", displayname: "Madam"},
-    {id: 2, username: "neeraj", displayname: "Neeraj"},
-    {id: 3, username: "krishna", displayname: "Krishna"}
+    {id: 1, username: "madam", displayname: "Madam", password: "madam123"},
+    {id: 2, username: "neeraj", displayname: "Neeraj", password: "madam123"},
+    {id: 3, username: "krishna", displayname: "Krishna", password: "madam123"}
 ]
 
 export const cityArr = [

@@ -13,6 +13,8 @@
         <input type="text" id="id" placeholder="Enter Id"><br>
         <input type="text" id="username" placeholder="Enter username"><br>
         <input type="text" id="displayname" placeholder="Enter displayname"><br>
+        <input type="text" id="password" placeholder="Enter password"><br>
+        <input type="text" id="endpoint" placeholder="Enter endpoint"><br>
         <select name="method" id="method">
             <option value="put">Put</option>
             <option value="get">Get</option>
@@ -21,6 +23,7 @@
         <button type="submit">Submit</button>
     </form>
     <div id="response"></div>
+    <div>{{SESSION_DATA}}</div>
     <script>
         const form = document.getElementById("request_form")
         const responseDiv = document.getElementById("response")
@@ -31,6 +34,8 @@
             const method = document.getElementById("method").value
             const username = document.getElementById("username").value
             const displayname = document.getElementById("displayname").value
+            const endpoint = document.getElementById("endpoint").value
+            const password = document.getElementById("password").value
 
             switch(method){
                 case "put":
@@ -43,12 +48,14 @@
                     })
                     break;
                 case "post":
-                    axios.post(`http://localhost:3000/api/users/`, { username: username, displayname: displayname })
+                    axios.post(`http://localhost:3000${endpoint}`,
+                    endpoint === "/api/auth/" ? { username: username, password: password } : { username: username, displayname: displayname })
                     .then((res)=>{
-                        responseDiv.innerHTML = `<pre>${res.status}: Data sent!</pre>`
+                        responseDiv.innerHTML = `<pre>${endpoint === "/api/auth/" ? res.data : res.status}: Data sent!</pre>`
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        responseDiv.innerHTML = err.response.data
+                        console.log(err.response)
                     })
                     break;
                 case "get":

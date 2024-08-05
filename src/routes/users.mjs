@@ -16,7 +16,7 @@ router.get(USER_URL, checkSchema(validateQuerySchema), (req, res)=>{
         const response = userArr.filter(user => user[data.filter].includes(data.value))
         return res.status(200).send(response)
     }
-    errorHTML(res, errors, "GET")
+    errorHTML(res, errors, "GET", 400)
 })
 
 router.get(`${USER_URL}/:id`, validateUserIndex, (req, res)=>{
@@ -38,7 +38,7 @@ router.post(USER_URL, checkSchema(validateUserSchema), (req, res) => {
         userArr.push(newUser);
         return res.sendStatus(201)
     } 
-    errorHTML(res, errors, "POST")
+    errorHTML(res, errors, "POST", 400)
 }) 
 
 // PUT method

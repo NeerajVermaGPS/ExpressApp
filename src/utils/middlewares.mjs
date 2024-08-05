@@ -17,12 +17,12 @@ export const validateUserIndex = (req, res, next) => {
     next()
 }
 
-export const errorHTML = (res, errors, method) => {
+export const errorHTML = (res, errors, method, statusCode) => {
     res.setHeader("Content-Type", "text/html")
     let mainHTML = fs.readFileSync("./src/errors.html", "utf-8")
     mainHTML = mainHTML.replaceAll("{{METHOD_NAME}}", method)
     mainHTML = mainHTML.replace("{{errorArr}}", "[" + errors + "]")
-    res.status(400).send(mainHTML)
+    res.status(statusCode).send(mainHTML)
 }
 
 // app.use(loggingMiddleware)

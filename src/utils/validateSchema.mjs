@@ -63,3 +63,27 @@ export const validateQuerySchema = {
         }
     }
 }
+
+export const validatAuthSchema = {
+    username: {
+        isString: {
+            errorMessage: "username should be a valid string!"
+        },
+        isLength: {
+            options: {
+                min: 5,
+                max: 32
+            },
+            errorMessage: "username should be between 5-32 characters!"
+        }
+    },
+    password: {
+        isLength: {
+            options: {
+                min: 5,
+                max: 32
+            },
+            errorMessage: "password should be between 5-32 characters!"
+        }
+    }
+}

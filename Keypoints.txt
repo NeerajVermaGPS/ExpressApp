@@ -24,3 +24,9 @@ Concepts:
         - contains the data from request(either from query or POST)
       - Validation Schema
   - Router
+  - Cookies
+    - cookie-parser
+    - unsigned
+    - signed ("secret")
+  - Session
+    - session.id
