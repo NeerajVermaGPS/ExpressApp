@@ -3,6 +3,7 @@ import { validationResult, matchedData, checkSchema } from "express-validator"
 import { validateUserSchema, validateQuerySchema } from '../utils/validateSchema.mjs'
 import { validateUserIndex, errorHTML } from '../utils/middlewares.mjs'
 import { userArr } from '../utils/dataMimic.mjs'
+import User from '../mongoose/schemas/user.mjs'
 
 const router = Router()
 
@@ -25,18 +26,27 @@ router.get(`${USER_URL}/:id`, validateUserIndex, (req, res)=>{
 })
 
 // POST Method
-router.post(USER_URL, checkSchema(validateUserSchema), (req, res) => {
+router.post(USER_URL, checkSchema(validateUserSchema), async (req, res) => {
     const result = validationResult(req)
     const errors = result.errors.map(err => "'" + err.msg + "'")
     if(result.isEmpty()){
         const data = matchedData(req)
-        const newUser = {
-            id: userArr.length + 1,
-            username: data.username,
-            displayname: data.displayname
+        // const newUser = {
+        //     id: userArr.length + 1,
+        //     username: data.username,
+        //     displayname: data.displayname
+        // }
+        // userArr.push(newUser);
+        // return res.sendStatus(201)
+        
+        const newUser = new User(data)
+        try{
+            const savedUser = await newUser.save()
+            return res.status(201).send(savedUser)
+        } catch(err) {
+            console.log(err.message)
+            return res.sendStatus(400)
         }
-        userArr.push(newUser);
-        return res.sendStatus(201)
     } 
     errorHTML(res, errors, "POST", 400)
 }) 

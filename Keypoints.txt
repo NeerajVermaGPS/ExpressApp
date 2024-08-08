@@ -30,3 +30,13 @@ Concepts:
     - signed ("secret")
   - Session
     - session.id
+    - req.session
+  - passport
+    - serialize
+    - deserialize
+    - use
+    - initiialize
+    - session
+  - mongoose
+    - connect
+    - schema

@@ -28,6 +28,18 @@ export const validateUserSchema = {
         notEmpty: {
             errorMessage: "Display Name can not be empty!"
         }
+    },
+    password: {
+        isString: {
+            errorMessage: "Password should be a string!"
+        },
+        isLength: {
+            options: {
+                min: 7,
+                max: 36
+            },
+            errorMessage: "Password length should be between 7-36"
+        }
     }
 }
 
