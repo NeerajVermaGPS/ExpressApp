@@ -8,17 +8,22 @@
 </head>
 <body>
     <a href="/api/users">Go to users</a></br>
-    <a href="/api/cities">Go to cities</a>
+    <a href="/api/cities">Go to cities</a></br>
+    <a href="/api/auth/status">Go to auth status</a></br>
+    <a href="/api/cart">Go to cart</a><br>
     <form id="request_form">
         <input type="text" id="id" placeholder="Enter Id"><br>
         <input type="text" id="username" placeholder="Enter username"><br>
         <input type="text" id="displayname" placeholder="Enter displayname"><br>
         <input type="text" id="password" placeholder="Enter password"><br>
-        <input type="text" id="endpoint" placeholder="Enter endpoint"><br>
+        <input type="text" id="item_name" placeholder="Enter Item Name"><br>
+        <input type="text" id="item_price" placeholder="Enter Item Price"><br>
+        <input type="text" id="endpoint" placeholder="Enter endpoint" value="/api/"><br>
         <select name="method" id="method">
             <option value="put">Put</option>
             <option value="get">Get</option>
             <option value="post">Post</option>
+            <option value="post2" selected>Add to Cart</option>
         </select>
         <button type="submit">Submit</button>
     </form>
@@ -36,6 +41,8 @@
             const displayname = document.getElementById("displayname").value
             const endpoint = document.getElementById("endpoint").value
             const password = document.getElementById("password").value
+            const item_name = document.getElementById("item_name").value
+            const item_price = document.getElementById("item_price").value
 
             switch(method){
                 case "put":
@@ -44,7 +51,8 @@
                         responseDiv.innerHTML = `<pre>${res.status}: Data sent!</pre>`
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        console.error(err.message)
+                        responseDiv.innerHTML = `<div style="color: red; margin-top: 20px">${err.message}</div>`
                     })
                     break;
                 case "post":
@@ -54,8 +62,8 @@
                         responseDiv.innerHTML = `<pre>${endpoint === "/api/auth/" ? res.data : res.status}: Data sent!</pre>`
                     })
                     .catch((err) => {
+                        console.error(err.response)
                         responseDiv.innerHTML = err.response.data
-                        console.log(err.response)
                     })
                     break;
                 case "get":
@@ -64,8 +72,19 @@
                         responseDiv.innerHTML = `Data received: <br /><pre>{<br/>    id: ${res.data.id}<br/>    username: ${res.data.username}<br/>    displayname: ${res.data.displayname}<br/>}</pre>`
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        console.error(err.message)
+                        responseDiv.innerHTML = `<div style="color: red; margin-top: 20px">${err.message}</div>`
                     })
+                    break;
+                case "post2":
+                    axios.post("http://localhost:3000/api/cart", {item_name: item_name, item_price:item_price})
+                      .then((res) => {
+                        responseDiv.innerHTML = res.data;
+                      })
+                      .catch((err) => {
+                        console.error(err.message)
+                        responseDiv.innerHTML = `<div style="color: red; margin-top: 20px">${err.message}</div>`
+                      })
                     break;
                 default:
                     return;

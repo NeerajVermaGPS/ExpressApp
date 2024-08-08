@@ -87,3 +87,27 @@ export const validatAuthSchema = {
         }
     }
 }
+
+export const validateCartSchema = {
+    item_name : {
+        isString: {
+            errorMessage: "Item name should be a string!"
+        }, 
+        isLength: {
+            options: {
+                min: 1,
+                max: 50
+            },
+            errorMessage: "Item name should be between 1-50 characters!"
+        }
+    },
+    item_price: {
+        isFloat: {
+            options: {
+                min: 1,
+                max: 100
+            },
+            errorMessage: "Item price should be between $1-$100"
+        }
+    }
+}

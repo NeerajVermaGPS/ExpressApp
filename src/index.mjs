@@ -4,6 +4,7 @@ import { loggingMiddleware } from './utils/middlewares.mjs'
 import routes from "./routes/index.mjs"
 import cookieParser from "cookie-parser"
 import session from "express-session"
+import passport from "passport"
 
 const app = express()
 

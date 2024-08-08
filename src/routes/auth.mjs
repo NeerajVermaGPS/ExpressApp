@@ -1,6 +1,6 @@
 import { userArr } from "../utils/dataMimic.mjs";
 import { Router } from "express";
-import { validatAuthSchema } from "../utils/validateSchema.mjs";
+import { validatAuthSchema, validateCartSchema } from "../utils/validateSchema.mjs";
 import { checkSchema, matchedData, validationResult } from "express-validator";
 import { errorHTML } from "../utils/middlewares.mjs";
 
@@ -18,7 +18,7 @@ router.post(`${AUTH_PATH}`, checkSchema(validatAuthSchema), (req, res) => {
             return;
         }
 
-        req.session.user = {username: userArr[getUser].username, displayname: userArr[getUser].displayname, session_id: req.session.id}
+        req.session.user = {...userArr[getUser], session_id: req.session.id}
         return userArr[getUser].password === password ? res.status(200).send(`Hii ${userArr[getUser].displayname}, you are logged in!<br/><pre>${JSON.stringify(req.session)}</pre>`) : errorHTML(res, "'Wrong password!'", "POST", 404)
     }
 
