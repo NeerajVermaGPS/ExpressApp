@@ -40,3 +40,10 @@ Concepts:
   - mongoose
     - connect
     - schema
+  - password hashing
+    - bcrypt
+  - session store
+    - connect-mongo
+    - in session:
+      - add store
+      - add client

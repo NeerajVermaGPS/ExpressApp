@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { userArr } from "../utils/dataMimic.mjs";
 import User from "../mongoose/schemas/user.mjs";
+import { comparePassword } from "../utils/helpers.mjs";
 
 passport.serializeUser((user, done) => {
     console.log(`Serializing user:`)
@@ -32,7 +33,7 @@ export default passport.use(
             // done(null, findUser)
             const findUser = await User.findOne({username})
             if(!findUser) throw new Error("User not find!")
-            if(findUser.password !== password) throw new Error("Wrong password!")
+            if(!comparePassword(password, findUser.password)) throw new Error("Wrong password!")
             done(null, findUser)
         } catch (error) {
             console.log(error.message)

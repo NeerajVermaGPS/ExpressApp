@@ -3,8 +3,11 @@ import { Router } from "express";
 import { validatAuthSchema, validateCartSchema } from "../utils/validateSchema.mjs";
 import { checkSchema, matchedData, validationResult } from "express-validator";
 import { errorHTML } from "../utils/middlewares.mjs";
-import '../strategies/local-strategy.mjs'
+import '../strategies/github-strategy.mjs'
+import dotenv from "dotenv"
+// import '../strategies/local-strategy.mjs'
 import passport from "passport";
+dotenv.config()
 
 const router = Router()
 const AUTH_PATH = "/api/auth"
@@ -34,6 +37,11 @@ router.post(`${AUTH_PATH}`, passport.authenticate("local"), (req, res) => {
 router.get(`${AUTH_PATH}/status`, (req, res) => {
     req.user ? res.status(200).send(`${req.user.displayname} logged in!`) : res.sendStatus(401)
     // res.status(200).send(req.session.user ? req.session.user : "Not logged in!")
+})
+
+router.get(`${AUTH_PATH}/github`, passport.authenticate("github"))
+router.get(`${process.env.GITHUB_OAUTH_REDIRECTS}`, passport.authenticate("github"), (req, res) => {
+    res.sendStatus(200)
 })
 
 router.post(`${AUTH_PATH}/logout`, (req, res) =>{

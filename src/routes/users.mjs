@@ -4,12 +4,17 @@ import { validateUserSchema, validateQuerySchema } from '../utils/validateSchema
 import { validateUserIndex, errorHTML } from '../utils/middlewares.mjs'
 import { userArr } from '../utils/dataMimic.mjs'
 import User from '../mongoose/schemas/user.mjs'
+import { hashPassword } from '../utils/helpers.mjs'
 
 const router = Router()
 
 const USER_URL = "/api/users"
 
 router.get(USER_URL, checkSchema(validateQuerySchema), (req, res)=>{
+
+    console.log("\nFollowing data is from session storage: ")
+    req.sessionStore.get(req.session.id, (err, sessionData) => err ? console.log(err) : console.log(sessionData))
+    
     const result = validationResult(req)
     const errors = result.errors.map(err=> "'" + err.msg + "'")
     if (result.isEmpty()) {
@@ -38,7 +43,8 @@ router.post(USER_URL, checkSchema(validateUserSchema), async (req, res) => {
         // }
         // userArr.push(newUser);
         // return res.sendStatus(201)
-        
+
+        data.password = hashPassword(data.password)
         const newUser = new User(data)
         try{
             const savedUser = await newUser.save()
