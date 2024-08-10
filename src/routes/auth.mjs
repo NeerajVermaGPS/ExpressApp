@@ -3,11 +3,9 @@ import { Router } from "express";
 import { validatAuthSchema, validateCartSchema } from "../utils/validateSchema.mjs";
 import { checkSchema, matchedData, validationResult } from "express-validator";
 import { errorHTML } from "../utils/middlewares.mjs";
-import '../strategies/github-strategy.mjs'
-import dotenv from "dotenv"
-// import '../strategies/local-strategy.mjs'
 import passport from "passport";
-dotenv.config()
+import '../strategies/github-strategy.mjs'
+// import '../strategies/local-strategy.mjs'
 
 const router = Router()
 const AUTH_PATH = "/api/auth"
@@ -35,20 +33,21 @@ router.post(`${AUTH_PATH}`, passport.authenticate("local"), (req, res) => {
 // })
 
 router.get(`${AUTH_PATH}/status`, (req, res) => {
-    req.user ? res.status(200).send(`${req.user.displayname} logged in!`) : res.sendStatus(401)
+    console.log("Inside status")
+    return req.user ? res.status(200).send(`${req.user.displayName} logged in!`) : res.sendStatus(401)
     // res.status(200).send(req.session.user ? req.session.user : "Not logged in!")
 })
 
 router.get(`${AUTH_PATH}/github`, passport.authenticate("github"))
-router.get(`${process.env.GITHUB_OAUTH_REDIRECTS}`, passport.authenticate("github"), (req, res) => {
-    res.sendStatus(200)
+router.get(`/api/auth/github/redirects`, passport.authenticate("github"), (req, res) => {
+    console.log(req.user)
+    res.status(200).send(`Hii ${req.user.displayName}! Welcome back!`)
 })
 
 router.post(`${AUTH_PATH}/logout`, (req, res) =>{
     if(!req.user) return res.status(401).send("No user logged in!")
-    const { displayname } = req.user
     req.logout((err)=>{
-        return err ? res.sendStatus(400) : res.status(200).send(`Logged out ${displayname}!`)
+        return err ? res.status(400).send(err) : res.status(200).send(`Logged out ${req.user.displayName}!`)
     })
 })
 
